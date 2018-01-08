@@ -17,6 +17,7 @@ const _recurse = (i = PORTS[0]) => {
   if (i < PORTS[1]) {
     const server = http.createServer((req, res) => {
       const host = req.headers['host'] || '';
+      console.log('proxy web', host);
       const match = host.match(/^(.+?)\.([0-9]+?)\.servers\.zeovr.io$/);
       if (match) {
         const target = match[1];
@@ -32,6 +33,7 @@ const _recurse = (i = PORTS[0]) => {
     // const server = httpServerPlus.create(_request);
     server.on('upgrade', (req, socket, head) => {
       const host = req.headers['host'] || '';
+      console.log('proxy ws', host);
       const match = host.match(/^(.+?)\.([0-9]+?)\.servers\.zeovr.io$/);
       if (match) {
         const target = match[1];
