@@ -10,7 +10,7 @@ const proxy = httpProxy.createProxyServer({
   protocolRewrite: true,
 });
 
-const PORTS = [8000, 9000];
+const PORTS = [1, 1024];
 
 const _recurse = (i = PORTS[0]) => {
   console.log(i);
