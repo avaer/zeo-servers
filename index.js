@@ -18,12 +18,14 @@ const _recurse = (i = PORTS[0]) => {
     const server = http.createServer((req, res) => {
       const host = req.headers['host'] || '';
       console.log('proxy web', host);
-      const match = host.match(/^(.+?)\.([0-9]+?)\.servers\.zeovr.io(?::[0-9]+)?$/);
+      const match = host.match(/^(.+?)\.([0-9]+?)\.servers\.zeovr\.io(?::[0-9]+)?$/);
       if (match) {
-        const target = match[1];
+        const host = match[1];
         const port = match[2];
+        const target = 'http://' + host + ':' + port;
+        console.log('proxy web target', target);
         proxy.web(req, res, {
-          target: 'http://' + target + ':' + port,
+          target,
         });
       } else {
         res.statusCode = 404;
@@ -34,12 +36,14 @@ const _recurse = (i = PORTS[0]) => {
     server.on('upgrade', (req, socket, head) => {
       const host = req.headers['host'] || '';
       console.log('proxy ws', host);
-      const match = host.match(/^(.+?)\.([0-9]+?)\.servers\.zeovr.io(?::[0-9]+)?$/);
+      const match = host.match(/^(.+?)\.([0-9]+?)\.servers\.zeovr\.io(?::[0-9]+)?$/);
       if (match) {
-        const target = match[1];
+        const host = match[1];
         const port = match[2];
+        const target = 'ws://' + host + ':' + port;
+        console.log('proxy ws target', target);
         proxy.ws(req, socket, head, {
-          target: 'ws://' + target + ':' + port,
+          target,
         });
       } else {
         socket.close();
